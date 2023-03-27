@@ -1,6 +1,16 @@
+Covered:
+
+1. useQuery Hook
+2. React Query Devtools
+3. Query Variables
+4. Pagination
+
 Preview:
 
-![image](https://user-images.githubusercontent.com/15225177/227932511-e91f227d-7fd8-49ec-9588-7057ae638e5e.png)
+![image](https://user-images.githubusercontent.com/15225177/228026078-072ec404-a60e-44c0-85fe-cb66542d9d7d.png)
+
+![image](https://user-images.githubusercontent.com/15225177/228026401-a73bf0bc-e228-4aae-ad18-751dc661a59d.png)
+
 
 # Getting Started with Create React App
 
