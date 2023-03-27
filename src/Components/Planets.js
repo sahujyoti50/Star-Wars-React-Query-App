@@ -1,23 +1,18 @@
-import React from 'react';
-import { useQuery } from 'react-query';
+import React, { useState } from 'react';
+import { usePaginatedQuery } from 'react-query';
 import Planet from './Planet';
 
-const fetchPlanets = async () => {
-    const res = await fetch('http://swapi.dev/api/planets/');
+const fetchPlanets = async (key, page) => {
+    const res = await fetch(`http://swapi.dev/api/planets/?page=${page}`);
     return res.json();
 }
 
 const Planets = () => {
-    const { data, status } = useQuery('planets', fetchPlanets, {
-        staleTime: 5000,//data will be old in 5 second
-        cacheTime: 1000,//data will be cache for 1 second,for 1 second it will use data from cache doesn't reload it
-        onSuccess: () => console.log('data fetched with no problems'),
-    });
-
+    const [page, setPage] = useState(1);
+    const { resolvedData, latestData, status } = usePaginatedQuery(['planets', page], fetchPlanets);
     return (
         <div>
             <h2>Planets</h2>
-
             {status === 'loading' && (
                 <div>Loading data</div>
             )}
@@ -27,11 +22,17 @@ const Planets = () => {
             )}
 
             {status === 'success' && (
-                <div>
-                    {data.results.map(planet => <Planet key={planet.name} planet={planet} />)}
-                </div>
-            )}
-        </div>
+                <>
+                    <div>
+                        <button onClick={() => setPage(resolvedData.previous && (page-1))} disabled={!resolvedData.previous}>Previous</button>
+                        <button>{page}</button>
+                        <button onClick={() => setPage(resolvedData.next && (page+1))} disabled={!resolvedData.next}>Next</button>
+                        {resolvedData.results.map(planet => <Planet key={planet.name} planet={planet} />)}
+                    </div>
+                </>
+            )
+            }
+        </div >
     );
 }
 
